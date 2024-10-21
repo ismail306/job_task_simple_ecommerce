@@ -3,12 +3,12 @@
         <div class="nano-content">
             <ul>
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="{{ route('dashboard') }}">
                         <!-- <img src="images/logo.png" alt="" /> --><span>Logo</span></a>
                 </div>
                 <li class="label">Main</li>
                 <li>
-                    <a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
+                    <a href="{{ route('dashboard') }}"><i class="fa fa-home"></i> Dashboard</a>
                 </li>
                 <li class="label">Apps</li>
 

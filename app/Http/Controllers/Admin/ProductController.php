@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Admin\Category;
 use App\Models\Admin\Product;
+use App\Models\Admin\SubCategory;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use App\Traits\CommonHelperTrait;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    use CommonHelperTrait;
     /**
      * Display a listing of the resource.
      *
@@ -40,47 +45,24 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
 
-        $request->validate([
-            'category_id' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'required|max:4',
-            'discount' => 'required',
-
-        ]);
-
-
+        $path = 'storage/images/product-images';
+        $filename = $this->storeImage($path, $request->file('image'));
 
         $product = new Product();
 
-        $product->slug = Str::slug($request->name) . '_' . time();
-        $product->name = $request->name;
+        $product->slug = Str::slug($request->title) . '_' . time();
+        $product->title = $request->title;
+        $product->image = $filename;
         $product->description = $request->description;
         $product->price = $request->price;
         $product->discount = $request->discount;
-        $product->category_id = $request->category_id;
+        $product->category_id = $request->category;
+        $product->sub_category_id = $request->subcategory;
+        $product->status = $request->status;
         $product->save();
-
-        foreach ($request->file('images') as $image) {
-
-            //image store
-            $originalname = $image->getClientOriginalName();
-            $filename =  date('Y-m-d') . '_' . time() . $originalname;
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(500, 500);
-            $image_resize->save(public_path('storage/images/products_images/' . $filename));
-            $image = new Images();
-            $image->product_id = $product->id;
-            $image->url = $filename;
-            $image->save();
-        }
-
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -105,10 +87,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         //dd products category id
-        $categoryList = Category::where('status', 1)->pluck('title', 'id');
-
-
-        return view('admin.products.edit', compact('product', 'categoryList'));
+        $categories = Category::where('status', 1)->get();
+        $subcategories = SubCategory::where('category_id', $product->category_id)->get();
+        return view('admin.products.edit', compact('product', 'categories', 'subcategories'));
     }
 
     /**
@@ -118,43 +99,26 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
 
-        $request->validate([
-            'category_id' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'max:4',
-            'discount' => 'required',
 
-        ]);
+        if ($request->hasFile('image')) {
+            $path = 'storage/images/product-images';
+            $filename = $this->updateImage($path, $request->file('image'), $product->image);
+            $product->image = $filename;
+        }
 
-        $product->name = $request->name;
+        $product->title = $request->title;
+        $product->slug = Str::slug($request->title) . '_' . time();
         $product->description = $request->description;
         $product->price = $request->price;
         $product->discount = $request->discount;
-        $product->stock = $request->stock;
-        $product->category_id = $request->category_id;
+        $product->sub_category_id = $request->subcategory;
+        $product->category_id = $request->category;
+        $product->status = $request->status;
         $product->save();
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
 
-                //image store
-                $originalname = $image->getClientOriginalName();
-                $filename =  date('Y-m-d') . '_' . time() . $originalname;
-                $image_resize = Image::make($image->getRealPath());
-                $image_resize->resize(500, 500);
-                $image_resize->save(public_path('storage/images/products_images/' . $filename));
-                $image = new Images();
-                $image->product_id = $product->id;
-                $image->url = $filename;
-                $image->save();
-            }
-        }
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 

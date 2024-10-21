@@ -50,7 +50,6 @@
   }]
 ];
 
-    new Chartist.Pie('.ct-pie-chart', data, options, responsiveOptions);
 
 
     /*----------------------------------*/

@@ -15,15 +15,7 @@
                     </a>
 
                     {{-- create --}}
-                    @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-                        </button>{{$error}}
-                    </div>
-                    @endforeach
 
-                    @endif
                     <form action="{{route('sub-categories.update',$sub_category->id)}}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -61,9 +53,9 @@
                             </div>
                             <div class="col-md-4">
 
-                                <label class="control-label">Update Photo</label>
+                                <label class="control-label">Update Image</label>
                                 <input class="form-control form-white" type="file" name="image" />
-                                @error('photo')
+                                @error('image')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
 

@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard.edit');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::resource('categories', CategoryController::class, ['names' => 'categories']);
 Route::resource('sub-categories', SubCategoryController::class, ['names' => 'sub-categories']);
 Route::get('/get-subcategories-by-category/{catId}', [SubCategoryController::class, 'subCatByCat'])->name('get-subcategories-by-category');

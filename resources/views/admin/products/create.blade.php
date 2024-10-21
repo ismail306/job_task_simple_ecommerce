@@ -26,22 +26,22 @@
 
                             <div class="form-group">
                                 <label class="control-label">Select Sub Category</label>
-                                <select class="custom-select" name="subcategories" id="subcategories">
+                                <select class="custom-select" name="subcategory" id="subcategories">
                                     <option value="" disabled selected> Select Sub Category</option>
 
                                 </select>
 
 
-                                @error('subcategories')
+                                @error('subcategory')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
 
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                @error('name')
+                                <label for="title">Title</label>
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required>
+                                @error('title')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -51,7 +51,7 @@
 
                             <div class="form-group text-secondary">
                                 <label for="description">Description</label>
-                                <textarea id="summernote" class="form-control @error('description') is-invalid @enderror" rows="4" name="description" required autocomplete="description">{{ old('description') }}</textarea>
+                                <textarea id="summernote" class="form-control @error('description') is-invalid @enderror" rows="4" name="description">{{ old('description') }}</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -80,28 +80,22 @@
                             </div>
 
                             <div class="form-group">
-                                <div>
-                                    <label for="images[]">Images:</label>
-                                    <input type="file" name="images[]" id="images" multiple>
-                                </div>
-
-                                @error('images.*')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                @error('images')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <label class="control-label">Category Photo</label>
+                                <input class="form-control form-white" required type="file" name="image" />
+                                @error('image')
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="stock">{{ __('Stock') }}</label>
-                                <input id="stock" type="number" min="0" class="form-control r" name="stock" value="{{ old('stock') }}" required>
-                                @error('stock')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+
+                            <div class="form-group mb-4">
+                                <label class="control-label">Status</label>
+                                <select class="custom-select" name="status" id="">
+                                    <option value="1" selected> Active</option>
+                                    <option value="0"> Inactive</option>
+                                </select>
                             </div>
+
 
 
 

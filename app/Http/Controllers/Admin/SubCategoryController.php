@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubCategoryStoreRequest;
+use App\Http\Requests\SubCategoryUpdateRequest;
 use App\Models\Admin\Category;
 use App\Models\Admin\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
+use App\Traits\CommonHelperTrait;
 
 class SubCategoryController extends Controller
 {
+    use CommonHelperTrait;
     public function index()
     {
         $sub_categories = SubCategory::all();
@@ -23,27 +27,12 @@ class SubCategoryController extends Controller
         return view('admin.sub-categories.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(SubCategoryStoreRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'category' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
-        ]);
 
-        //image store
-        $originalname = $request->file('image')->getClientOriginalName();
-        $filename =  date('Y-m-d') . '_' . time() . $originalname;
-        $image = $request->file('image');
-        $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(512, 512);
-        // Define the storage path
-        $path = public_path('storage/images/sub-category-images');
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-        $image_resize->save($path . '/' . $filename);
+        $path = 'storage/images/sub-category-images';
+        $filename = $this->storeImage($path, $request->file('image'));
 
         $sub_category = new SubCategory();
         $sub_category->name = $request->name;
@@ -69,29 +58,14 @@ class SubCategoryController extends Controller
         return view('admin.sub-categories.edit', compact('sub_category', 'categories'));
     }
 
-    public function update(Request $request, $category)
+    public function update(SubCategoryUpdateRequest $request, $subcategory)
     {
 
+        $sub_category = SubCategory::find($subcategory);
 
-        $sub_category = SubCategory::find($category);
-        if ($request->file('image')) {
-            $request->validate([
-
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-            ]);
-
-            $oldImagePath = public_path('storage/images/sub-category-images/' . $sub_category->image);
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath); // Delete the old image
-            }
-
-            $originalname = $request->file('image')->getClientOriginalName();
-            $filename =  date('Y-m-d') . '_' . time() . $originalname;
-            $image = $request->file('image');
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(512, 512);
-            $image_resize->save(public_path('storage/images/sub-category-images/' . $filename));
+        if ($request->hasFile('image')) {
+            $path = 'storage/images/sub-category-images';
+            $filename = $this->updateImage($path, $request->file('image'), $sub_category->image);
             $sub_category->image = $filename;
         }
 
@@ -101,7 +75,7 @@ class SubCategoryController extends Controller
         $sub_category->save();
         //redirect with success message
 
-        return redirect()->route('sub-categories.index')->with('success', 'SubCategory updated successfully');
+        return redirect()->route('sub-categories.index')->with('success', 'Sub Category updated successfully');
     }
 
 
