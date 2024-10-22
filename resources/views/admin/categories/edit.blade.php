@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="control-label">Category Description</label>
-                                <textarea style="height: 100px;" class="form-control form-white" required placeholder="Category Description" value="{{ old('description', $category->description) }}" type="text" maxlength="80" name="description">{{ old('description', $category->description) }}</textarea>
+                                <textarea style="height: 100px;" class="form-control form-white"  placeholder="Category Description" value="{{ old('description', $category->description) }}" type="text" maxlength="80" name="description">{{ old('description', $category->description) }}</textarea>
                                 @error('description')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

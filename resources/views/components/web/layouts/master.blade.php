@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Ecommerce</title>
-
+    <title>Simple E-commerce</title>
+    <link href="{{asset('assets/logo.jpg')}}" rel="icon">
     <!-- Bootstrap - Online Linking -->
     <link href="{{asset('/assets/web/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
 

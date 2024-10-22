@@ -4,18 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
+use App\Interfaces\CategoryInterface;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Admin\Category;
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use App\Traits\CommonHelperTrait;
+
+
 
 class CategoryController extends Controller
 {
-    use CommonHelperTrait;
+
+    protected $categoryRepository;
+
+    public function __construct(CategoryInterface $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
     public function index()
     {
-        $categories = Category::all();
+        $categories = $this->categoryRepository->all();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -27,20 +33,9 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
 
-        $path = 'storage/images/category-images';
-        $filename = $this->storeImage($path, $request->file('image'));
-
-
-        $categories = new Category();
-        $categories->name = $request->name;
-        $categories->image = $filename;
-        $categories->description = $request->description;
-        $categories->status = $request->status;
-
-
-        $categories->save();
-
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        $data = $request->all();
+        $data['image'] = $request->file('image');
+        return $this->categoryRepository->store($data);
     }
 
     public function show(Category $categorie)
@@ -56,21 +51,7 @@ class CategoryController extends Controller
 
     public function update(CategoryUpdateRequest $request, $category)
     {
-
-        $categories = Category::find($category);
-
-        if ($request->hasFile('image')) {
-            $path = 'storage/images/category-images';
-            $filename = $this->updateImage($path, $request->file('image'), $categories->image);
-            $categories->image = $filename;
-        }
-
-        $categories->name = $request->name;
-        $categories->status = $request->status;
-        $categories->description = $request->description;
-        $categories->save();
-        //redirect with success message
-
+        $this->categoryRepository->update($request->all(), $category);
         return redirect()->route('categories.index')->with('success', 'Category updated successfully');
     }
 

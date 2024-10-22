@@ -10,12 +10,17 @@
                     </div>
                 </div>
                 <div class="float-right">
-
                     <div class="dropdown dib">
+
                         <div class="header-icon">
                             <a class="mx-5 btn btn-sm btn-success" href="{{route('index')}}">WEB
 
                             </a>
+                        </div>
+                    </div>
+                    <div class="dropdown dib">
+
+                        <div class="header-icon" data-toggle="dropdown">
                             <span class="user-avatar">{{ auth()->user()->name }}
                                 <i class="ti-angle-down f-s-10"></i>
                             </span>

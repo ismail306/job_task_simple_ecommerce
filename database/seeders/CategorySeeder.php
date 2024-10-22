@@ -13,21 +13,21 @@ class CategorySeeder extends Seeder
         $categories = [
             [
                 'name' => 'Category 1',
-                'image' => 'ca1.jpg',
+                'image' => 'cat1.jpg',
                 'description' => 'Description for category 1',
-                'status' => '1', 
+                'status' => '1',
             ],
             [
                 'name' => 'Category 2',
-                'image' => 'ca2.jpg',
+                'image' => 'cat2.jpg',
                 'description' => 'Description for category 2',
-                'status' => '1', 
+                'status' => '1',
             ],
             [
                 'name' => 'Category 3',
-                'image' => 'ca3.jpg',
+                'image' => 'cat3.jpg',
                 'description' => 'Description for category 3',
-                'status' => '1', 
+                'status' => '1',
             ],
         ];
 
