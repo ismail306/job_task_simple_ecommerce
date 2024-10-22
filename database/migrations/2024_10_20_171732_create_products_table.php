@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->decimal('price', 8, 2);
-            $table->decimal('discount', 8, 2)->nullable();
+            $table->decimal('discount_price', 8, 2)->nullable();
             $table->enum('status', ['1', '0'])->default('1');
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
             $table->foreign('sub_category_id')->references('id')->on('sub_categories')->cascadeOnDelete();

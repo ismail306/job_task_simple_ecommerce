@@ -70,9 +70,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="discount">Discount / New Price'</label>
-                                <input id="discount" type="number" min="0" class="form-control " name="discount" value="{{ old('discount') }}" required>
-                                @error('discount')
+                                <label for="discount_price">discount_price / New Price'</label>
+                                <input id="discount_price" type="number" min="0" class="form-control " name="discount_price" value="{{ old('discount_price') }}" required>
+                                @error('discount_price')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

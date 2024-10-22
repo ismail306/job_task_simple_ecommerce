@@ -21,7 +21,7 @@ class ProductStoreRequest extends FormRequest
             'title' => 'required|max:100',
             'description' => 'required',
             'price' => 'required',
-            'discount' => 'required',
+            'discount_price' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }

@@ -34,7 +34,7 @@
                                                 <th>Image</th>
                                                 <th>Description</th>
                                                 <th>Price (Old Price)</th>
-                                                <th>Discount (New Price)</th>
+                                                <th>discount_price (New Price)</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -51,7 +51,7 @@
                                                 </td>
                                                 <td>{!! Str::limit($product->description, 250, ' ...') !!}</td>
                                                 <td>{{ $product->price }}</td>
-                                                <td>{{ $product->discount }}</td>
+                                                <td>{{ $product->discount_price }}</td>
                                                 <td>
                                                     @if ($product->status)
                                                     <span class="badge badge-success">Active</span>

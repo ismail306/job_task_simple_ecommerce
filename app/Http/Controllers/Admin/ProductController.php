@@ -58,7 +58,7 @@ class ProductController extends Controller
         $product->image = $filename;
         $product->description = $request->description;
         $product->price = $request->price;
-        $product->discount = $request->discount;
+        $product->discount_price = $request->discount_price;
         $product->category_id = $request->category;
         $product->sub_category_id = $request->subcategory;
         $product->status = $request->status;
@@ -113,7 +113,7 @@ class ProductController extends Controller
         $product->slug = Str::slug($request->title) . '_' . time();
         $product->description = $request->description;
         $product->price = $request->price;
-        $product->discount = $request->discount;
+        $product->discount_price = $request->discount_price;
         $product->sub_category_id = $request->subcategory;
         $product->category_id = $request->category;
         $product->status = $request->status;

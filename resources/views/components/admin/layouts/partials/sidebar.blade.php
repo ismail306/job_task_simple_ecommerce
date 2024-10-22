@@ -26,7 +26,14 @@
 
 
                 <li>
-                    <a><i class="ti-close"></i> Logout</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <a href="route('logout')" class="ml-3 text-danger"
+                            onclick="event.preventDefault();
+                                                this.closest('form').submit();"> <i class="ti-close"></i> Logout</a>
+                    </form>
+
                 </li>
             </ul>
         </div>
